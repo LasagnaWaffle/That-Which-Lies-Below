@@ -1,0 +1,254 @@
+:root {
+  --wall: #7a7252;
+  --green: #3dff6e;
+  --green-dim: rgba(61, 255, 110, 0.55);
+  --glow: 0 0 4px rgba(61, 255, 110, 0.55), 0 0 10px rgba(61, 255, 110, 0.18);
+  --panel-width: 300px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  background: var(--wall);
+  font-family: "VT323", "Courier New", monospace;
+}
+
+/* ---------- Wall ---------- */
+
+.wall {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    /* dim room lighting */
+    radial-gradient(ellipse at 50% 45%, transparent 35%, rgba(20, 17, 8, 0.55) 100%),
+    /* water stain and uneven paint */
+    radial-gradient(ellipse 22% 14% at 18% 8%, rgba(70, 58, 25, 0.28), transparent 70%),
+    radial-gradient(ellipse 30% 20% at 85% 90%, rgba(60, 52, 28, 0.22), transparent 70%),
+    radial-gradient(ellipse 18% 25% at 92% 22%, rgba(255, 240, 190, 0.05), transparent 70%),
+    /* fine paint grain */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.16'/%3E%3C/svg%3E"),
+    /* large, soft brush unevenness */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.004 0.012' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E"),
+    var(--wall);
+  background-blend-mode: normal, normal, normal, normal, multiply, multiply, normal;
+}
+
+.cracks {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.cracks path {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.crack-dark path {
+  stroke: rgba(28, 23, 12, 0.6);
+  stroke-width: 1.4;
+}
+
+.crack-light {
+  transform: translate(0.6px, 0.8px);
+}
+
+.crack-light path {
+  stroke: rgba(255, 244, 205, 0.14);
+  stroke-width: 1.2;
+}
+
+/* ---------- Terminal built into the wall ---------- */
+
+.recess {
+  position: relative;
+  z-index: 1;
+  width: min(920px, 94vw);
+  height: min(720px, 86vh);
+  height: min(720px, 86dvh);
+  padding: 10px;
+  border-radius: 10px;
+  background: #1c1a13;
+  box-shadow:
+    inset 0 10px 22px rgba(0, 0, 0, 0.85),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.6),
+    0 1px 0 rgba(255, 244, 205, 0.18),
+    0 -1px 0 rgba(0, 0, 0, 0.35);
+}
+
+.bezel {
+  height: 100%;
+  padding: clamp(14px, 3vw, 30px);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, #3b3a33 0%, #2c2b26 55%, #232220 100%);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.1),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.55),
+    0 6px 14px rgba(0, 0, 0, 0.6);
+}
+
+.screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 28px / 34px;
+  background: radial-gradient(ellipse at 50% 50%, #0b1a0e 0%, #060d07 70%, #030603 100%);
+  box-shadow:
+    0 0 0 2px #111,
+    inset 0 0 70px rgba(0, 0, 0, 0.9),
+    inset 0 0 14px rgba(0, 0, 0, 0.95);
+  color: var(--green);
+  text-shadow: var(--glow);
+  font-size: clamp(18px, 2.2vw, 23px);
+  line-height: 1.25;
+  cursor: text;
+}
+
+.output {
+  flex: 1;
+  overflow-y: auto;
+  padding: 30px 38px 6px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  scrollbar-width: thin;
+  scrollbar-color: var(--green-dim) transparent;
+}
+
+.output::-webkit-scrollbar { width: 8px; }
+.output::-webkit-scrollbar-thumb { background: var(--green-dim); border-radius: 4px; }
+.output::-webkit-scrollbar-track { background: transparent; }
+
+.line { margin: 0 0 0.9em; }
+.line.user::before { content: "> "; }
+.line.system { opacity: 0.75; }
+
+.input-line {
+  display: flex;
+  gap: 0.5ch;
+  padding: 6px 38px 28px;
+}
+
+.prompt { flex: none; }
+
+#input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--green);
+  caret-color: var(--green);
+  font: inherit;
+  text-shadow: inherit;
+}
+
+.screen.waiting .prompt { opacity: 0.4; }
+
+.scanlines,
+.glass {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.scanlines {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.18) 3px
+  );
+}
+
+.glass {
+  background:
+    radial-gradient(ellipse 60% 35% at 28% 12%, rgba(255, 255, 255, 0.05), transparent 70%),
+    radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+/* ---------- Commands drawer ---------- */
+
+.commands {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  width: var(--panel-width);
+  max-width: 85vw;
+  transform: translateX(100%);
+  transition: transform 0.25s ease;
+}
+
+.commands.open { transform: translateX(0); }
+
+.commands-toggle {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  width: 30px;
+  height: 64px;
+  margin-top: -32px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px 0 0 6px;
+  background: #2c2b26;
+  box-shadow: -2px 2px 8px rgba(0, 0, 0, 0.5);
+  color: var(--green);
+  text-shadow: var(--glow);
+  font: 18px/1 "VT323", monospace;
+  cursor: pointer;
+}
+
+.commands-panel {
+  height: 100%;
+  overflow-y: auto;
+  padding: 28px 24px;
+  background: #1d1c18;
+  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.55);
+  color: var(--green);
+  text-shadow: var(--glow);
+  font-size: 20px;
+}
+
+.commands-panel h2 {
+  margin: 0 0 18px;
+  font-size: 26px;
+  font-weight: normal;
+  letter-spacing: 2px;
+}
+
+.commands-panel ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.commands-panel li { margin-bottom: 16px; }
+
+.commands-panel .command-name {
+  display: block;
+  font-size: 22px;
+}
+
+.commands-panel .command-desc {
+  display: block;
+  opacity: 0.75;
+}

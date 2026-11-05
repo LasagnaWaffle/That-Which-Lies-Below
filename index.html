@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>That Which Lies Below</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wall" aria-hidden="true">
+    <svg class="cracks" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+      <g class="crack-light">
+        <path d="M0,120 L60,140 L95,128 L150,175 L190,170 L240,225" />
+        <path d="M95,128 L110,90 L150,70" />
+        <path d="M820,0 L812,40 L830,70 L815,110 L824,140" />
+        <path d="M1000,560 L950,575 L925,610 L880,618 L860,660 L820,672" />
+        <path d="M925,610 L935,650 L920,700" />
+        <path d="M140,1000 L150,950 L130,905 L160,860 L150,820" />
+        <path d="M130,905 L95,880 L70,890" />
+      </g>
+      <g class="crack-dark">
+        <path d="M0,120 L60,140 L95,128 L150,175 L190,170 L240,225" />
+        <path d="M95,128 L110,90 L150,70" />
+        <path d="M820,0 L812,40 L830,70 L815,110 L824,140" />
+        <path d="M1000,560 L950,575 L925,610 L880,618 L860,660 L820,672" />
+        <path d="M925,610 L935,650 L920,700" />
+        <path d="M140,1000 L150,950 L130,905 L160,860 L150,820" />
+        <path d="M130,905 L95,880 L70,890" />
+      </g>
+    </svg>
+  </div>
+
+  <main class="recess">
+    <div class="bezel">
+      <div class="screen" id="screen">
+        <div class="output" id="output" role="log" aria-live="polite"></div>
+        <form class="input-line" id="input-form" autocomplete="off">
+          <span class="prompt">&gt;</span>
+          <input id="input" type="text" spellcheck="false" autocapitalize="off" aria-label="Terminal input">
+        </form>
+        <div class="scanlines" aria-hidden="true"></div>
+        <div class="glass" aria-hidden="true"></div>
+      </div>
+    </div>
+  </main>
+
+  <aside class="commands" id="commands">
+    <button class="commands-toggle" id="commands-toggle" type="button"
+            aria-expanded="false" aria-controls="commands-panel" aria-label="Show commands">&#9664;</button>
+    <div class="commands-panel" id="commands-panel">
+      <h2>COMMANDS</h2>
+      <ul id="commands-list"></ul>
+    </div>
+  </aside>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
