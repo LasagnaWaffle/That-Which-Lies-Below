@@ -1,6 +1,6 @@
 window.TERMINAL_CONFIG = {
   // Production URL of the n8n Webhook node (POST).
-  WEBHOOK_URL: "",
+  WEBHOOK_URL: "https://lasagnawaffle.app.n8n.cloud/webhook/underground",
 
   // Everything from STATE_START onward is hidden from the terminal.
   // If STATE_END also appears after it, only the text between the two is hidden.
@@ -12,5 +12,5 @@ window.TERMINAL_CONFIG = {
   START_MESSAGE: "",
 
   // Typing speed of AI replies. 0 prints instantly.
-  TYPE_CHARS_PER_SECOND: 300,
+  TYPE_CHARS_PER_SECOND: 50,
 };
