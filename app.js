@@ -12,6 +12,8 @@
   };
 
   const screen = document.getElementById("screen");
+  const terminalView = document.getElementById("terminal-view");
+  const tabs = document.querySelectorAll(".screen-nav .tab");
   const output = document.getElementById("output");
   const form = document.getElementById("input-form");
   const input = document.getElementById("input");
@@ -199,7 +201,26 @@
     output.textContent = "";
     session = freshSession();
     saveSession();
+    if (window.TerminalMap) window.TerminalMap.clear();
     boot();
+  }
+
+  let terminalScroll = 0;
+
+  function showView(name) {
+    const showMap = name === "map";
+    if (showMap === terminalView.hidden) return;
+    for (const tab of tabs) tab.classList.toggle("active", tab.dataset.view === name);
+    if (showMap) {
+      terminalScroll = output.scrollTop;
+      terminalView.hidden = true;
+      window.TerminalMap.show();
+    } else {
+      window.TerminalMap.hide();
+      terminalView.hidden = false;
+      output.scrollTop = terminalScroll;
+      input.focus();
+    }
   }
 
   function renderCommands() {
@@ -241,9 +262,11 @@
     requestStory(text);
   });
 
-  screen.addEventListener("click", () => {
+  terminalView.addEventListener("click", () => {
     if (!window.getSelection().toString()) input.focus();
   });
+
+  for (const tab of tabs) tab.addEventListener("click", () => showView(tab.dataset.view));
 
   drawerToggle.addEventListener("click", () => {
     setDrawer(!drawer.classList.contains("open"));
